@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "KelimeEkleme";
+}
+
+<h2>KelimeEkleme</h2>
+
+@using (Html.BeginForm("KelimeEkle", "Word", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example3">Kelimeyi Girin:</label>
+        <input type="text" id="KelimeTr" name="KelimeTr" class="form-control form-control-lg"
+               placeholder="Kelimenin Türkçesini giriniz." />
+    </div>
+    <br />
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example3">Kelimenin İngilizcesi:</label>
+        <input type="text" id="KelimeEng" name="KelimeEng" class="form-control form-control-lg"
+               placeholder="Kelimenin İngilizcesini giriniz." />
+    </div>
+    <br />
+    <div>
+        <label for="KelimeKonu">Kelimenin Konusu:</label>
+        <select name="KelimeKonu" class="form-select">
+            <option selected value="1">Yiyecekler ve İçecekler</option>
+            <option value="2">Spor ve Aktiviteler</option>
+            <option value="3">Sağlık ve Zindelik</option>
+            <option value="4">İş ve Eğitim</option>
+            <option value="5">Seyahat ve Kültür</option>
+            <option value="6">Ev ve Yaşam</option>
+            <option value="7">Teknoloji ve Bilim</option>
+            <option value="8">Eğlence ve Sanat</option>
+            <option value="9">Doğa ve Çevre</option>
+            <option value="10">Hayvanlar</option>
+            <option value="11">Aletler ve Makineler</option>
+        </select>
+    </div>
+    <br />
+
+    @*<div class="form-outline mb-4">
+            <label class="form-label" for="form3Example3">Kelimenin Konusu:</label>
+            <input type="text" id="KelimeKonu" name="KelimeKonu" class="form-control form-control-lg"
+                   placeholder="Kelimenin Konusunu Giriniz." />
+        </div>
+        <br />*@
+
+    <input type="file" accept="image/*" id="Dosya" name="Dosya" />
+    <br />
+
+    <div class="form-outline mb-4">
+        <button type="submit" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+            Kelime Ekle
+        </button>
+    </div>
+}
+

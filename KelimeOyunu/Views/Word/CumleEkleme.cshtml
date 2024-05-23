@@ -1,0 +1,73 @@
+﻿@model IEnumerable<KelimeOyunu.Models.KelimeModel>
+@{
+    ViewBag.Title = "CumleEkleme";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Kelmenin ID'si</th>
+            <th scope="col">Kelimenin Türkçesi</th>
+            <th scope="col">Kelimenin İngilizcesi</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.KelimeID</th>
+                <td>@item.KelimeTr</td>
+                <td>@item.KelimeEng</td>
+                <td>
+                    <button id="@item.KelimeID" class="btn btn-success kelime-sec" data-toggle="modal" data-target="#Modal1" data-id="@item.KelimeID">
+                        <h5>Cümle Girin</h5>
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<div class="modal" id="Modal1">
+    <div class="modal-dialog bg-success">
+
+        <div class="modal-header">
+            <h2 class="modal-title">Soru Ekleme Menüsü</h2>
+        </div>
+        <form action="/word/CumleEkleme" method="post">
+            <div class="modal-body">
+
+                <input type="hidden" id="KelimeID" name="KelimeID" />
+                <label>Örnek cümlenizi girin:</label>
+                <input type="text" id="CumleOrnegi" name="CumleOrnegi" class="text-left" placeholder="Ali playing football with the ball." />
+                <br />
+                <label>Yanlış seçenekleri giriniz: </label>
+                <input type="text" id="secenek1" name="secenek1" class="text-capitalize" placeholder="Çim" />
+                <br />
+                <input type="text" id="secenek2" name="secenek2" class="text-capitalize" placeholder="Ayakkabı" />
+                <br />
+                <input type="text" id="secenek3" name="secenek3" class="text-capitalize" placeholder="Kale" />
+                <br />
+                <button id="gonder" type="submit" class="btn btn-success">Gönder </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll('.kelime-sec');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const KelimeID = button.getAttribute('data-id');
+                document.getElementById('KelimeID').value = KelimeID;
+            });
+        });
+    });
+</script>
