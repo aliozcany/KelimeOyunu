@@ -135,6 +135,9 @@
     <Compile Include="Helper\DapperHelper.cs" />
     <Compile Include="Models\KullaniciModel.cs" />
     <Compile Include="Models\KelimeModel.cs" />
+    <Compile Include="Models\SoruIDCekmeModel.cs" />
+    <Compile Include="Models\SoruModel.cs" />
+    <Compile Include="Models\SoruModel2.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

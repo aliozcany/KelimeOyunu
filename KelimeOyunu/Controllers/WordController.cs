@@ -66,6 +66,7 @@ namespace KelimeOyunu.Controllers
         public ActionResult CumleEkleme(int KelimeID,string CumleOrnegi,string secenek1, string secenek2, string secenek3)
         {
             DapperHelper helper = new DapperHelper();
+
             string sql = @"insert into Sorular(CumleOrnegi,SoruCumlesi,Secenek1,Secenek2,Secenek3,SecenekDogru,KelimeID) values(@CumleOrnegi,
                             'What does '+ (select LOWER(KelimeENG) from Kelimeler Where KelimeID=@KelimeID)+' mean?'
                          ,@Secenek1,@Secenek2,@Secenek3,(select KelimeEng from Kelimeler where KelimeID=@KelimeID),@KelimeID)";

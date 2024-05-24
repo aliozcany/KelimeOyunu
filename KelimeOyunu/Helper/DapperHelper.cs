@@ -10,7 +10,7 @@ namespace KelimeOyunu.Helper
     public class DapperHelper
     {
         public DapperHelper() { }
-        private readonly string ConnectionString = "Server=.\\MSSQLSERVER02;Database=YazilimYapimiProjesi;Integrated Security=true;TrustServerCertificate=true;";
+        private readonly string ConnectionString = "Server=DESKTOP-EMVU51B;Database=YazilimYapimiProjesi;Integrated Security=true;TrustServerCertificate=true;";
 
         public SqlConnection GetConnection() { return new SqlConnection(ConnectionString); }
 
