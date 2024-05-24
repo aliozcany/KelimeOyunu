@@ -31,7 +31,7 @@ namespace KelimeOyunu.Controllers
             int soruTarihSorgu = helper.ExecuteScalar<int>(saydirmasql);
 
 
-            string sql = "select CumleOrnegi,SoruCumlesi,Secenek1,Secenek2,Secenek3,Secenek4 from Sorular";
+            
 
 
             string deneme = null;
@@ -39,19 +39,28 @@ namespace KelimeOyunu.Controllers
             if (soruTarihSorgu > 0)
             {
 
+                
+                string sql2 = @"select S.CumleOrnegi,S.SoruCumlesi,S.Secenek1,S.Secenek2,S.Secenek3,S.Secenek4 from Kelimeler k 
+                                left join SoruSayaci ss on k.KelimeID=ss.KelimeID
+                                left join Sorular s on k.KelimeID=s.KelimeID
+                                left join Kullanicilar Ku on ss.KullaniciID=ku.KullaniciID
+                                where SorulacakTarih<GETDATE() and Ku.KullaniciID=@KullaniciID";
 
-                string sql2 = @"
-select S.CumleOrnegi,S.SoruCumlesi,S.Secenek1,S.Secenek2,S.Secenek3,S.Secenek4 from Kelimeler k left join SoruSayaci ss on k.KelimeID=ss.KelimeID
-left join Sorular s on k.KelimeID=s.KelimeID
-left join Kullanicilar Ku on ss.KullaniciID=ku.KullaniciID
-where SorulacakTarih<GETDATE()";
-                var zort = helper.Query<SoruModel>(sql).ToList();
-                var bırt = helper.Query<SoruModel>(sql2);
-                foreach (SoruModel model in bırt)
+                string sql = @"select top(select TopSoruSayisi from KullaniciSoruIliski where KullaniciID=@KullaniciID) 
+                                S.CumleOrnegi,S.SoruCumlesi,S.Secenek1,S.Secenek2,S.Secenek3,S.Secenek4 
+                                from Kelimeler k
+                                left join Sorular s on k.KelimeID=s.KelimeID
+                                left join SoruSayaci ss on k.KelimeID=ss.KelimeID
+                                left join Kullanicilar Ku on ss.KullaniciID=ku.KullaniciID
+                                where ss.SorulacakTarih IS NULL and ss.KullaniciID=@KullaniciID ";
+
+                var normalSoru = helper.Query<SoruModel>(sql,new {KullaniciID=UserInfo.KullaniciID}).ToList();
+                var bilinenSoru = helper.Query<SoruModel>(sql2, new {KullaniciID=UserInfo.KullaniciID});
+                foreach (SoruModel model in bilinenSoru)
                 {
-                    zort.Add(model);
+                    normalSoru.Add(model);
                 }
-                return View(zort);
+                return View(normalSoru);
 
 
             }
