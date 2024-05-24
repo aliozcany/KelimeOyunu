@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using KelimeOyunu.Helper;
+using KelimeOyunu.Models;
 using System.Web.Mvc;
 
 namespace KelimeOyunu.Controllers
@@ -10,6 +8,15 @@ namespace KelimeOyunu.Controllers
     {
         public ActionResult Ayar()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Ayar(int SoruSayi)
+        {
+            DapperHelper helper = new DapperHelper();
+            string sql = "update KullaniciSoruIliski set TopSoruSayisi=@SoruSayi where KullaniciID="+UserInfo.KullaniciID;
+            helper.Execute(sql, new { SoruSayi=SoruSayi });
             return View();
         }
     }

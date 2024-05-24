@@ -2,22 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-
 namespace KelimeOyunu.Helper
 {
     public class DapperHelper
     {
         public DapperHelper() { }
         private readonly string ConnectionString = "Server=DESKTOP-EMVU51B;Database=YazilimYapimiProjesi;Integrated Security=true;TrustServerCertificate=true;";
-
         public SqlConnection GetConnection() { return new SqlConnection(ConnectionString); }
-
-       
-
-
-
         public int Execute(string sql, object param = null)
         {
             var conn = GetConnection();
@@ -35,7 +26,6 @@ namespace KelimeOyunu.Helper
                 conn.Close();
             }
         }
-
         public T ExecuteScalar<T>(string sql, object data = null)
         {
             var conn = GetConnection();
@@ -56,28 +46,6 @@ namespace KelimeOyunu.Helper
             }
 
         }
-        public object Query(string sql, object value = null)
-        {
-            var conn = GetConnection();
-            try
-            {
-                conn.Open();
-                return conn.Query(sql, value);
-
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
-        
-
         public T QueryFirstOrDefault<T>(string sql, object value = null)
         {
             var conn = GetConnection();
@@ -117,7 +85,6 @@ namespace KelimeOyunu.Helper
             }
 
         }
-
         public T QuerySingleOrDefault<T>(string sql, object value = null)
         {
             var conn = GetConnection();
@@ -138,18 +105,5 @@ namespace KelimeOyunu.Helper
             }
         }
 
-
-
-        internal void Execute<T>()
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
     }
 }

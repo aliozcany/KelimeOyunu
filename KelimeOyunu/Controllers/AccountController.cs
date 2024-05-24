@@ -1,22 +1,15 @@
 ﻿using KelimeOyunu.Helper;
 using KelimeOyunu.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Web;
 using System.Web.Mvc;
 
 namespace KelimeOyunu.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account
         public ActionResult Login()
         {
             return View();
         }
-
 
         [HttpPost]
         public ActionResult Login(string email, string password)
@@ -32,7 +25,7 @@ namespace KelimeOyunu.Controllers
                 UserInfo.KullaniciSoyad = data.KullaniciSoyad;
                 UserInfo.KullaniciMail = data.KullaniciMail;
                 UserInfo.KullaniciSifre = data.KullaniciSifre;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("KelimeEkleme", "Word");
             }
             else
             {
@@ -52,6 +45,21 @@ namespace KelimeOyunu.Controllers
             DapperHelper helper = new DapperHelper();
             string sql = "insert into Kullanicilar(KullaniciAd,KullaniciSoyad,KullaniciMail,KullaniciSifre) values (@ad,@soyad,@mail,@sifre)";
             helper.Execute(sql, new { ad = ad, soyad = soyad, mail = mail, sifre = sifre });
+
+            string sql2 = "insert into KullaniciSoruIliski(KullaniciID) values((select KullaniciID from Kullanicilar where KullaniciMail=@mail))";
+            helper.Execute(sql2, new { mail = mail });
+
+            string kelimeSayisi = "select count(*) from Kelimeler";
+            int kelimeSayisiTutucu = helper.ExecuteScalar<int>(kelimeSayisi);
+
+            for (int i = 1; i <= kelimeSayisiTutucu; i++)
+            {
+
+                string insertintoToplu = @"insert into SoruSayaci(SoruBilmeSayaci,KelimeID,KullaniciID) values(0," + i +
+                                         ",(select KullaniciID from Kullanicilar where KullaniciMail=@mail))";
+                helper.Execute(insertintoToplu, new { mail = mail });
+
+            }
             return RedirectToAction("Login", "Account");
         }
 
@@ -76,7 +84,7 @@ namespace KelimeOyunu.Controllers
                            @body = @mesaj;";
 
 
-            helper.Execute(sql, new {mail=mail });
+            helper.Execute(sql, new { mail = mail });
 
             return RedirectToAction("Login", "Account");
         }
@@ -90,6 +98,7 @@ namespace KelimeOyunu.Controllers
             UserInfo.KullaniciSoyad = null;
             UserInfo.KullaniciMail = null;
             UserInfo.KullaniciSifre = null;
+
 
             return RedirectToAction("Login", "Account");
 

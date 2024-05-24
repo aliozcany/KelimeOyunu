@@ -1,11 +1,6 @@
 ﻿using KelimeOyunu.Helper;
 using KelimeOyunu.Models;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -50,6 +45,18 @@ namespace KelimeOyunu.Controllers
                 FotografID = dosyaid
             });
 
+
+            string kullaniciSayisi= "select count(*) from Kullanicilar";
+            int tutucu = helper.ExecuteScalar<int>(kullaniciSayisi);
+
+            for (int i = 1;i<=tutucu;i++) 
+            {
+                string insertintoToplu = @"insert into SoruSayaci(SoruBilmeSayaci,KelimeID,KullaniciID) values(0,
+                                          (select KelimeID from Kelimeler where KelimeEng=@KelimeEng),"+i+")";
+                helper.Execute(insertintoToplu, new {KelimeEng=KelimeEng });
+                
+            }
+
             return RedirectToAction("KelimeEkleme");
         }
 
@@ -67,9 +74,10 @@ namespace KelimeOyunu.Controllers
         {
             DapperHelper helper = new DapperHelper();
 
-            string sql = @"insert into Sorular(CumleOrnegi,SoruCumlesi,Secenek1,Secenek2,Secenek3,SecenekDogru,KelimeID) values(@CumleOrnegi,
-                            'What does '+ (select LOWER(KelimeENG) from Kelimeler Where KelimeID=@KelimeID)+' mean?'
-                         ,@Secenek1,@Secenek2,@Secenek3,(select KelimeEng from Kelimeler where KelimeID=@KelimeID),@KelimeID)";
+            string sql = @"insert into Sorular(CumleOrnegi,SoruCumlesi,Secenek1,Secenek2,Secenek3,Secenek4,SecenekDogru,KelimeID) 
+                             values(@CumleOrnegi,'What does '+ (select LOWER(KelimeENG) from Kelimeler Where KelimeID=@KelimeID)+' mean?'
+                            ,@Secenek1,@Secenek2,@Secenek3,(select KelimeTR from Kelimeler where KelimeID=@KelimeID)
+                            ,(select KelimeTR from Kelimeler where KelimeID=@KelimeID),@KelimeID)";
 
             helper.Execute(sql, new { CumleOrnegi = CumleOrnegi, KelimeID = KelimeID,  secenek1 = secenek1, secenek2 = secenek2, secenek3 = secenek3 });
 

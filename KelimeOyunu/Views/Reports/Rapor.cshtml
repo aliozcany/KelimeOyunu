@@ -1,22 +1,17 @@
-﻿
-@{
-    ViewBag.Title = "Rapor";
-}
-
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="tr">
 <head>
     <title>Result Visualization</title>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
     <script>
         $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                url: '@Url.Action("VisualizeUrunResult", "Default4")',
+                url: '@Url.Action("CategoryChart", "Reports")',
                 success: function (result) {
                     google.charts.load('current', {
                         'packages': ['corechart']
@@ -30,17 +25,17 @@
 
         function drawChart(result) {
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Name');
-            data.addColumn('number', 'Stoklar');
+            data.addColumn('string', 'CategoryName');
+            data.addColumn('number', 'CategoryCount');
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([obj.urunad, obj.stok]);
+                dataArray.push([obj.CategoryName, obj.CategoryCount]);
             });
             data.addRows(dataArray);
 
             var columnChartOptions = {
-                title: "Ürün - Stok Grafiği",
+                title: "Bilinen Soru - Kategori Grafiği",
                 width: 1000,
                 height: 800,
                 bar: { groupWidth: "20%" },
@@ -54,6 +49,10 @@
     </script>
 </head>
 <body>
+    <a href="/Reports/DownloadPdf" class="btn btn-primary" id="bırt">Pdf indir</a>
     <div id="Piechart_div"></div>
+    <script>
+
+    </script>
 </body>
 </html>
